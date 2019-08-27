@@ -227,7 +227,25 @@ jobs:
         - *validate-openapi-v2-yaml
         - *validate-openapi-v3-json
         - *validate-openapi-v3-yaml
-
+    
+    - php: nightly
+      before_install:
+        - *install-mongodb-php-extension
+        - *disable-xdebug-php-extension
+        - *disable-php-memory-limit
+        - *add-composer-bin-dir-to-path
+      install:
+        - *update-project-dependencies
+      before_script:
+        - *clear-test-app-cache
+      script:
+        - *run-phpunit-tests
+        - *clear-test-app-cache
+        - *run-behat-tests
+        - *validate-openapi-v2-json
+        - *validate-openapi-v2-yaml
+        - *validate-openapi-v3-json
+        - *validate-openapi-v3-yaml
   allow_failures:
     - env: SYMFONY_DEPRECATIONS_HELPER=max[total]=5 # 5 deprecation notices from FOSUserBundle
   fast_finish: true
